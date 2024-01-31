@@ -6,7 +6,7 @@ namespace CutestDogsAdoptionService.Controllers
     public class DogsController : Controller
     {
 
-        List<DogModel> dogs = new List<DogModel>
+        private static List<DogModel> dogs = new List<DogModel>
 {
     new DogModel{ Id = 1, Name = "Bark Twain", Cuteness = 9, Image = "doggo 1.png", FavFood = "Barkoni", FavToy = "Barkle", Temperament = 7, IsAdopted= false },
     new DogModel{ Id = 2, Name = "Sir Waggington", Cuteness = 8, Image = "doggo 2.png", FavFood = "Pawsta", FavToy = "Fetch Stick", Temperament = 6, IsAdopted= false },
@@ -30,6 +30,25 @@ namespace CutestDogsAdoptionService.Controllers
 
             // Visa en view med alla dogs
             return View(sortedDogs);
+        }
+
+        public IActionResult Details(int id)
+        {
+            // Hämta hunden med id:t
+            DogModel? selectedDog = dogs.FirstOrDefault(d => d.Id == id);
+            // Skicka den hunden till view:en
+            return View(selectedDog);
+        }
+
+        public IActionResult Adopt(int id) // Id skickas med asp-route-id
+        {
+            // Hämta hunden med id:t
+            DogModel? selectedDog = dogs.FirstOrDefault(d => d.Id == id);
+
+            if (selectedDog != null)
+                selectedDog.IsAdopted = true;
+            // Skicka den hunden till view:en
+            return View(selectedDog);
         }
     }
 }
